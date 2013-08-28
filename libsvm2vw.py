@@ -1,10 +1,14 @@
 import sys
+import argparse
 
-input_file = sys.argv[1]
-output_file = sys.argv[2]
+parser = argparse.ArgumentParser()
+parser.add_argument("input_file", help = "path to csv input file")
+parser.add_argument("output_file", help = "path to output file")
 
-i = open( input_file )
-o = open( output_file, 'wb' )
+args = parser.parse_args()
+
+i = open( args.input_file )
+o = open( args.output_file, 'wb' )
 
 for line in i:
 	y, x = line.split( " ", 1 )
