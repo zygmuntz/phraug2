@@ -89,3 +89,7 @@ Save a subset of lines from an input file to an output file. Start at _offset_ (
 -->
 
 
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/zygmuntz/phraug2/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
