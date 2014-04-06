@@ -1,4 +1,3 @@
-'
 '-1 for label index if no label in file'
 
 import sys
