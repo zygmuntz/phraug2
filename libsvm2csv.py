@@ -1,10 +1,10 @@
 import sys, csv
 import argparse
 
-parser = argparse.ArgumentParser(description = 'convert libsvm file to csv')
-parser.add_argument("input_file", help = "path to csv input file")
-parser.add_argument("output_file", help = "path to output file")
-parser.add_argument("dimensionality", type = int, help = "dimensionality of feature set")
+parser = argparse.ArgumentParser( description = "convert libsvm file to csv" )
+parser.add_argument( "input_file", help = "path to csv input file" )
+parser.add_argument( "output_file", help = "path to output file" )
+parser.add_argument( "dimensionality", type = int, help = "dimensionality of feature set" )
 
 args = parser.parse_args()
 
