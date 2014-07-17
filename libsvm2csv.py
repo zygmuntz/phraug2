@@ -1,10 +1,18 @@
-import sys, csv
+#!/usr/bin/env python
+
+"""
+convert libsvm file to csv'
+libsvm2csv.py <input file> <output file> <X dimensionality>
+"""
+
+import sys
+import csv
 import argparse
 
 parser = argparse.ArgumentParser( description = "convert libsvm file to csv" )
 parser.add_argument( "input_file", help = "path to csv input file" )
 parser.add_argument( "output_file", help = "path to output file" )
-parser.add_argument( "dimensionality", type = int, help = "dimensionality of feature set" )
+parser.add_argument( "dimensionality", type = int, help = "dimensionality of feature set, not including the label." )
 
 args = parser.parse_args()
 
