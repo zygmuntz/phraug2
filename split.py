@@ -3,7 +3,6 @@ split a file into two randomly, line by line.
 '''
 
 import argparse
-import csv
 import sys
 import random
 
