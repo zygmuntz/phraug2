@@ -8,12 +8,14 @@ import sys
 import random
 
 parser = argparse.ArgumentParser( description = "split a file into two randomly, line by line." )
-parser.add_argument( "input_file", help = "path to csv input file" )
-parser.add_argument( "output_file1", help = "path to output file" )
-parser.add_argument( "output_file2", help = "path to output file" )
-parser.add_argument( "-p", "--probability", help = "probability of writing to the first file", default = 0.9, type = float )
+parser.add_argument( "input_file", help = "path to an input file" )
+parser.add_argument( "output_file1", help = "path to the first output file" )
+parser.add_argument( "output_file2", help = "path to the second output file" )
+parser.add_argument( "-p", "--probability", help = "probability of writing to the first file (default 0.9)",
+	default = 0.9, type = float )
 parser.add_argument( "-r", "--random_seed", help = "random seed", default = False )
-parser.add_argument( "-s", "--skip_headers", help = "skip the header line", default = False, action = 'store_true' )
+parser.add_argument( "-s", "--skip_headers", help = "skip the header line", 
+	default = False, action = 'store_true' )
 
 args = parser.parse_args()
 
