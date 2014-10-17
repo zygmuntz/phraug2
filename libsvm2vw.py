@@ -7,7 +7,8 @@ import argparse
 parser = argparse.ArgumentParser( description = "convert libsvm file to vw format, skip malformed lines" )
 parser.add_argument( "input_file", help = "path to csv input file" )
 parser.add_argument( "output_file", help = "path to output file" )
-parser.add_argument( "-z", "--convert_zeros", help = "convert labels for binary classification from 0 to -1", action = 'store_true', default = False )
+parser.add_argument( "-z", "--convert_zeros", help = "convert labels for binary classification from 0 to -1", 
+	action = 'store_true', default = False )
 
 args = parser.parse_args()
 

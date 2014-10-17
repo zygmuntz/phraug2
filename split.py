@@ -1,44 +1,37 @@
 '''
 split a file into two randomly, line by line. 
-Usage: split.py <input file> <output file 1> <output file 2> [<probability of writing to the first file>]'
 '''
 
+import argparse
 import csv
 import sys
 import random
 
-input_file = sys.argv[1]
-output_file1 = sys.argv[2]
-output_file2 = sys.argv[3]
+parser = argparse.ArgumentParser( description = "split a file into two randomly, line by line." )
+parser.add_argument( "input_file", help = "path to csv input file" )
+parser.add_argument( "output_file1", help = "path to output file" )
+parser.add_argument( "output_file2", help = "path to output file" )
+parser.add_argument( "-p", "--probability", help = "probability of writing to the first file", default = 0.9, type = float )
+parser.add_argument( "-r", "--random_seed", help = "random seed", default = False )
+parser.add_argument( "-s", "--skip_headers", help = "skip the header line", default = False, action = 'store_true' )
 
-try:
-	P = float( sys.argv[4] )
-except IndexError:
-	P = 0.9
-	
-try:
-	seed = sys.argv[5]
-except IndexError:
-	seed = None
-	
-print "P = %s" % ( P )
+args = parser.parse_args()
 
-if seed:
-	random.seed( seed )
+if args.random_seed:
+	random.seed( args.random_seed )
 
-i = open( input_file )
-o1 = open( output_file1, 'wb' )
-o2 = open( output_file2, 'wb' )
+i = open( args.input_file )
+o1 = open( args.output_file1, 'wb' )
+o2 = open( args.output_file2, 'wb' )
 
-#headers = reader.next()
-#writer1.writerow( headers )
-#writer2.writerow( headers )
+if args.skip_headers:
+	i.readline()
 
 counter = 0
 
 for line in i:
 	r = random.random()
-	if r > P:
+	if r > args.probability:
 		o2.write( line )
 	else:
 		o1.write( line )
