@@ -47,6 +47,8 @@ parser.add_argument( "-s", "--skip_headers", help = "use this option if there ar
 
 parser.add_argument( "-z", "--convert_zeros", help = "convert labels for binary classification from 0 to -1", action = 'store_true', default = False )
 
+parser.add_argument( "-c", "--print_counter", help = "print counter every _ examples (default 10000)", type = int, default = 10000 )
+
 args = parser.parse_args()
 
 ###
@@ -89,7 +91,7 @@ for line in reader:
 	o.write( new_line )
 
 	n += 1
-	if n % 10000 == 0:
+	if n % args.print_counter == 0:
 		print n
 
 
