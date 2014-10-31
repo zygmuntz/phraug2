@@ -1,4 +1,5 @@
-'-1 for label index if no label in file'
+'Convert CSV file to Vowpal Wabbit format.'
+'Will work with numerical data only (no categorical columns)'
 
 import sys
 import csv
@@ -12,7 +13,11 @@ def construct_line( label, line ):
 		pass
 
 	if label == 0.0:
-		label = "0"
+		if args.convert_zeros:
+			label = "-1"
+		else:
+			label = "0"
+			
 	new_line.append( "%s |n " % ( label ))
 
 	for i, item in enumerate( line ):
@@ -40,7 +45,11 @@ parser.add_argument( "-i", "--ignore_columns", help = "index(es) of columns to i
 
 parser.add_argument( "-s", "--skip_headers", help = "use this option if there are headers in the file - default false", action = "store_true" )
 
+parser.add_argument( "-z", "--convert_zeros", help = "convert labels for binary classification from 0 to -1", action = 'store_true', default = False )
+
 args = parser.parse_args()
+
+###
 
 ignore_columns = []
 	
@@ -51,7 +60,8 @@ if args.ignore_columns:
 	
 if args.label_index >= 0:
 	ignore_columns.append( args.label_index )	
-ignore_columns.sort( reverse = True )
+	
+ignore_columns.sort( reverse = True )	# for later popping
 
 ###
 
@@ -69,9 +79,6 @@ for line in reader:
 		label = 1
 	else:
 		label = line[args.label_index]
-		
-		
-	# print "line:", len(line ), line	
 		
 	# drop ignored columns and/or label	
 	if ignore_columns:	
