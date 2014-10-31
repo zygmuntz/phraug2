@@ -30,18 +30,30 @@ def construct_line( label, line ):
 
 # ---
 
-parser = argparse.ArgumentParser(description = 'Convert CSV file to vw format.')
-parser.add_argument("input_file", help = "path to csv input file")
-parser.add_argument("output_file", help = "path to output file")
+parser = argparse.ArgumentParser( description = 'Convert CSV file to Vowpal Wabbit format.' )
+parser.add_argument( "input_file", help = "path to csv input file" )
+parser.add_argument( "output_file", help = "path to output file" )
 
+parser.add_argument( "-l", "--label_index", help = "index of label column (default 0, use -1 if there are no labels)", type = int, default = 0 )
 
-parser.add_argument("-l", "--label_index", help = "specify index of label col", type=int,
-					default = -1)
+parser.add_argument( "-i", "--ignore_columns", help = "index(es) of columns to ignore, for example 3 or 3,4,5 (no spaces in between)" )
 
-parser.add_argument("-s", "--skip_headers", help = "specify if there are headers in the file - default false",
-					 action="store_true")
+parser.add_argument( "-s", "--skip_headers", help = "use this option if there are headers in the file - default false", action = "store_true" )
 
 args = parser.parse_args()
+
+ignore_columns = []
+	
+if args.ignore_columns:
+	ignore_columns = args.ignore_columns.split( ',' )
+	ignore_columns = map( int, ignore_columns )
+	print "ignoring columns", ignore_columns
+	
+if args.label_index >= 0:
+	ignore_columns.append( args.label_index )	
+ignore_columns.sort( reverse = True )
+
+###
 
 i = open( args.input_file )
 o = open( args.output_file, 'w' )
@@ -53,10 +65,18 @@ if args.skip_headers:
 n = 0
 
 for line in reader:
-	if args.label_index == -1:
+	if args.label_index < 0:
 		label = 1
 	else:
-		label = line.pop( args.label_index )
+		label = line[args.label_index]
+		
+		
+	# print "line:", len(line ), line	
+		
+	# drop ignored columns and/or label	
+	if ignore_columns:	
+		for ic in ignore_columns:
+			line.pop( ic )
 
 	new_line = construct_line( label, line )
 	o.write( new_line )
