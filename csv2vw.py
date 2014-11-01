@@ -1,5 +1,5 @@
 'Convert CSV file to Vowpal Wabbit format.'
-'Will work with numerical data only (no categorical columns)'
+'all columns numerical or all categorical - no mixing at the moment'
 
 import sys
 import csv
@@ -7,6 +7,9 @@ import argparse
 
 def construct_line( label, line ):
 	new_line = []
+	
+	# label
+	
 	try:
 		label = float( label )
 	except Exception, e:
@@ -21,7 +24,29 @@ def construct_line( label, line ):
 		label = '1'
 			
 	new_line.append( "%s |n " % ( label ))
+	
+	# the rest
 
+	for i, item in enumerate( line ):
+		
+		if i in ignore_columns_dict:
+			continue
+
+		if args.categorical:
+			new_item = "c{}_{}".format( i + 1, item )
+
+		else:
+			try:
+				item = float( item )
+			except ValueError, e:
+				pass
+			if item == 0.0:
+				continue    # sparse format
+			new_item = "{}:{}".format( i + 1, item )
+			
+		new_line.append( new_item )			
+
+	"""
 	if args.categorical:
 		for i, item in enumerate( line ):
 
@@ -38,6 +63,7 @@ def construct_line( label, line ):
 				continue    # sparse!!!
 			new_item = "{}:{}".format( i + 1, item )
 			new_line.append( new_item )
+	"""
 			
 	new_line = " ".join( new_line )
 	new_line += "\n"
@@ -68,7 +94,6 @@ parser.add_argument( "-n", "--print_counter", type = int, default = 10000,
 	help = "print counter every _ examples (default 10000)" )
 
 
-
 args = parser.parse_args()
 
 ###
@@ -83,7 +108,9 @@ if args.ignore_columns:
 if args.label_index >= 0:
 	ignore_columns.append( args.label_index )	
 	
-ignore_columns.sort( reverse = True )	# for later popping
+# ignore_columns.sort( reverse = True )	# for later popping
+# instead a dictionary for faster 'in'
+ignore_columns_dict = { x: 1 for x in ignore_columns }
 
 ###
 
@@ -102,10 +129,13 @@ for line in reader:
 	else:
 		label = line[args.label_index]
 		
+	"""	
+	# will ignore columns in construct_line()
 	# drop ignored columns and/or label	
 	if ignore_columns:	
 		for ic in ignore_columns:
 			line.pop( ic )
+	"""
 
 	new_line = construct_line( label, line )
 	o.write( new_line )
