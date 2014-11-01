@@ -26,6 +26,11 @@ def construct_line( label, line ):
 	new_line.append( "%s |n " % ( label ))
 	
 	# the rest
+	
+	offset = 1
+	# to make test column numbers match train
+	if args.label_index < 0:
+		offset = 2
 
 	for i, item in enumerate( line ):
 		
@@ -33,7 +38,8 @@ def construct_line( label, line ):
 			continue
 
 		if args.categorical:
-			new_item = "c{}_{}".format( i + 1, item )
+			# 1-based indexing here
+			new_item = "c{}_{}".format( i + offset, item )
 
 		else:
 			try:
@@ -42,7 +48,7 @@ def construct_line( label, line ):
 				pass
 			if item == 0.0:
 				continue    # sparse format
-			new_item = "{}:{}".format( i + 1, item )
+			new_item = "{}:{}".format( i + offset, item )
 			
 		new_line.append( new_item )			
 
