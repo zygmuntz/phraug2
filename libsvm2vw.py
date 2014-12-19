@@ -24,7 +24,7 @@ for line in i:
 		print line
 		continue
 
-	if args.convert_zeros and y == '0':
+	if args.convert_zeros and float( y ) != 1.0:
 		y = '-1'
 		
 	new_line = y + " |n " + x
