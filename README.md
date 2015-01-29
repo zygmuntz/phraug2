@@ -9,7 +9,7 @@ See [http://fastml.com/processing-large-files-line-by-line/](http://fastml.com/p
 
 There's always at least one input file and usually one or more output files. An input file always stays unchanged.
 
-For documentation try calling a script, most will display usage information.
+For documentation try calling a script with `-h`, most will display usage information.
 
 <!--
 Format conversion
