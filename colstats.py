@@ -7,14 +7,12 @@ import numpy as np
 import argparse
 
 parser = argparse.ArgumentParser()
-parser.add_argument("input_file", help = "path to csv input file")
-parser.add_argument("output_file", help = "path to output file")
-
-parser.add_argument("--header", help = "Specify if file has header",
-					 action="store_true", default = False)
-
-parser.add_argument("-label_index", "--label_index", help = "Specify label index",
-					 type = int, default = False)
+parser.add_argument( "input_file", help = "path to csv input file" )
+parser.add_argument( "output_file", help = "path to output file" )
+parser.add_argument( "--header", help = "Specify if file has header", 
+	action="store_true", default = False )
+parser.add_argument( "-l", "--label_index", help = "Specify label index",
+	type = int, default = False )
 
 args = parser.parse_args()
 
