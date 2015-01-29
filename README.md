@@ -9,7 +9,10 @@ See [http://fastml.com/processing-large-files-line-by-line/](http://fastml.com/p
 
 There's always at least one input file and usually one or more output files. An input file always stays unchanged.
 
-For documentation try calling a script with `-h`, most will display usage information. Also see the _phraug_ docs.
+For documentation:
+* try calling a script with `-h`, most will display usage information.
+* see the _phraug_ docs.
+* see [http://fastml.com/introducing-phraug/](http://fastml.com/introducing-phraug/)
 
 <!--
 Format conversion
