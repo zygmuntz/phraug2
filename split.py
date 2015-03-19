@@ -15,6 +15,8 @@ parser.add_argument( "-p", "--probability", help = "probability of writing to th
 parser.add_argument( "-r", "--random_seed", help = "random seed", default = False )
 parser.add_argument( "-s", "--skip_headers", help = "skip the header line", 
 	default = False, action = 'store_true' )
+parser.add_argument( "-c", "--copy_headers", help = "copy the header line to both output files", 
+	default = False, action = 'store_true' )
 
 args = parser.parse_args()
 
@@ -25,8 +27,15 @@ i = open( args.input_file )
 o1 = open( args.output_file1, 'wb' )
 o2 = open( args.output_file2, 'wb' )
 
-if args.skip_headers:
+if args.skip_headers and args.copy_headers:
+	print "You can either skip or copy headers, not both."
+	quit()
+elif args.skip_headers:
 	i.readline()
+elif args.copy_headers:
+	headers = i.readline()
+	o1.write( headers )
+	o2.write( headers )
 
 counter = 0
 
