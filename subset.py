@@ -2,13 +2,17 @@
 'default 100 lines starting from 0'
 
 import sys
+import argparse
 
-input_file = sys.argv[1]
-output_file = sys.argv[2]
-try:
-	offset = int( sys.argv[3] )
-except IndexError:
-	offset = 0
+parser = argparse.ArgumentParser( description = "Save a subset of lines from the input file to the output file" )
+parser.add_argument( "input_file", help = "path to input file" )
+parser.add_argument( "output_file", help = "path to output file" )
+parser.add_argument( "-o", "--offset", help = "line number to start from, default 0", type = int, default = 0 )
+parser.add_argument( "-l", "--lines", help = "number of lines to write, default 100", type = int, default = 100 )
+
+args = parser.parse_args()
+
+
 	
 try:
 	lines = int( sys.argv[4] )
@@ -16,10 +20,12 @@ except IndexError:
 	lines = 100	
 
 
-i = open( input_file )
-o = open( output_file, 'wb' )
+i = open( args.input_file )
+o = open( args.output_file, 'wb' )
 
-count =  0
+offset = args.offset
+count = 0
+
 for line in i:
 
 	if offset > 0:
@@ -29,7 +35,7 @@ for line in i:
 	o.write( line )
 	count += 1
 	
-	if count >= lines:
+	if count >= args.lines:
 		break
 	
 

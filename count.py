@@ -5,7 +5,7 @@ import argparse
 parser = argparse.ArgumentParser(description='Count lines in a file')
 parser.add_argument("input_file", help = "path to csv input file")
 parser.add_argument("-v", "--verbose", help = "will write counts during process to standard out",
-					action = "store_true", default = False)
+	action = "store_true", default = False)
 args = parser.parse_args()
 
 f = open( args.input_file )
