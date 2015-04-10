@@ -46,7 +46,7 @@ def construct_line( label, line ):
 				item = float( item )
 			except ValueError, e:
 				pass
-			if item == 0.0:
+			if item == 0.0 or item == "":
 				continue    # sparse format
 			new_item = "{}:{}".format( i + offset, item )
 			
