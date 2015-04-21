@@ -1,6 +1,8 @@
 'Convert CSV file to Vowpal Wabbit format.'
 'all columns numerical or all categorical - no mixing at the moment'
 
+#Note: the indexing here will override VW's built in hashing. To fix: use --hash all
+
 import sys
 import csv
 import argparse
@@ -42,13 +44,20 @@ def construct_line( label, line ):
 			new_item = "c{}_{}".format( i + offset, item )
 
 		else:
-			try:
+			categorical = False
+                        try:
 				item = float( item )
 			except ValueError, e:
+                                if item:
+                                    categorical = True
 				pass
-			if item == 0.0 or item == "":
+			if item == 0.0 or not item:
 				continue    # sparse format
-			new_item = "{}:{}".format( i + offset, item )
+                        if categorical:
+ 			    new_item = item + "_" + "{}:{}".format( i + offset, 1.0 )
+                        else:
+                            new_item = "{}:{}".format( i + offset, item )
+
 			
 		new_line.append( new_item )			
 
