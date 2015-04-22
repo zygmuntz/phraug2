@@ -1,5 +1,5 @@
 'Convert CSV file to Vowpal Wabbit format.'
-'all columns numerical or all categorical - no mixing at the moment'
+'Allows mixing of categorical and numerical data'
 
 #Note: the indexing here will override VW's built in hashing. To fix: use --hash all
 
