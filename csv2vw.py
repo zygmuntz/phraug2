@@ -13,7 +13,7 @@ def construct_line( label, line ):
 	try:
 		label = float( label )
 	except:
-		pass
+		print "WARNING: a label is '{}'".format( label )
 
 	if label == 0.0:
 		if args.convert_zeros:
