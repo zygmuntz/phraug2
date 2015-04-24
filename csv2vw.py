@@ -11,20 +11,21 @@ def clean( item ):
 def handle_label( label ):
 	try:
 		label = float( label )
+		
+		if label == 0.0:
+			if args.convert_zeros:
+				label = "-1"
+			else:
+				label = "0"
+		elif label == 1.0:
+			label = '1'		
+			
 	except:
 		if label == '':
 			print "WARNING: a label is ''"
 		else:
 			print "WARNING: a label is '{}', setting to ''".format( label )
 			label = ''
-
-	if label == 0.0:
-		if args.convert_zeros:
-			label = "-1"
-		else:
-			label = "0"
-	elif label == 1.0:
-		label = '1'
 		
 	return label
 
@@ -117,7 +118,7 @@ ignore_columns_dict = { x: 1 for x in ignore_columns }
 ###
 
 i = open( args.input_file )
-o = open( args.output_file, 'w' )
+o = open( args.output_file, 'wb' )
 
 reader = csv.reader( i )
 if args.skip_headers:
