@@ -45,18 +45,19 @@ def construct_line( label, line ):
 
 		else:
 			categorical = False
-                        try:
+			try:
 				item = float( item )
 			except ValueError, e:
-                                if item:
-                                    categorical = True
+				if item:
+					categorical = True
 				pass
 			if item == 0.0 or not item:
 				continue    # sparse format
-                        if categorical:
- 			    new_item = item + "_" + "{}:{}".format( i + offset, 1.0 )
-                        else:
-                            new_item = "{}:{}".format( i + offset, item )
+			if categorical:
+				cleanedItem =  "".join(item.split()).replace("|", "").replace(":", "")
+				new_item = cleanedItem + "_" + "{}".format( i + offset)
+			else:
+				new_item = "{}:{}".format( i + offset, item )
 
 			
 		new_line.append( new_item )			
