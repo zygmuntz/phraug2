@@ -5,15 +5,18 @@ import sys
 import csv
 import argparse
 
-def construct_line( label, line ):
-	new_line = []
+def clean( item ):
+	return "".join( item.split()).replace( "|", "" ).replace( ":", "" )
 	
-	# label
-	
+def handle_label( label ):
 	try:
 		label = float( label )
 	except:
-		print "WARNING: a label is '{}'".format( label )
+		if label == '':
+			print "WARNING: a label is ''"
+		else:
+			print "WARNING: a label is '{}', setting to ''".format( label )
+			label = ''
 
 	if label == 0.0:
 		if args.convert_zeros:
@@ -22,9 +25,14 @@ def construct_line( label, line ):
 			label = "0"
 	elif label == 1.0:
 		label = '1'
-			
-	new_line.append( "%s |n" % ( label ))
-	
+		
+	return label
+
+def construct_line( label, line ):
+
+	new_line = []
+	new_line.append( "{} |n".format( handle_label( label )))
+
 	# the rest
 	
 	for i, item in enumerate( line ):
@@ -34,7 +42,7 @@ def construct_line( label, line ):
 
 		if args.categorical:
 			# 1-based indexing here
-			new_item = "c{}_{}".format( i + offset, item )
+			new_item = "c{}_{}".format( i + 1, clean( item ))
 
 		else:
 			categorical = False
@@ -49,8 +57,7 @@ def construct_line( label, line ):
 					continue
 				
 			if categorical:
-				cleaned_item =  "".join( item.split()).replace( "|", "" ).replace( ":", "" )
-				new_item =  "{}_{}".format( i + 1, cleaned_item )
+				new_item =  "c{}_{}".format( i + 1, clean( item ))
 			else:
 				new_item = "{}:{}".format( i + 1, item )
 
