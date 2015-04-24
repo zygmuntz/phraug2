@@ -1,8 +1,6 @@
 'Convert CSV file to Vowpal Wabbit format.'
 'Allows mixing of categorical and numerical data'
 
-#Note: the indexing here will override VW's built in hashing. To fix: use --hash all
-
 import sys
 import csv
 import argparse
@@ -14,7 +12,7 @@ def construct_line( label, line ):
 	
 	try:
 		label = float( label )
-	except Exception, e:
+	except:
 		pass
 
 	if label == 0.0:
@@ -25,15 +23,10 @@ def construct_line( label, line ):
 	elif label == 1.0:
 		label = '1'
 			
-	new_line.append( "%s |n " % ( label ))
+	new_line.append( "%s |n" % ( label ))
 	
 	# the rest
 	
-	offset = 1
-	# to make test column numbers match train
-	if args.label_index < 0:
-		offset = 2
-
 	for i, item in enumerate( line ):
 		
 		if i in ignore_columns_dict:
@@ -46,41 +39,24 @@ def construct_line( label, line ):
 		else:
 			categorical = False
 			try:
-				item = float( item )
-			except ValueError, e:
+				item_float = float( item )
+				if item_float == 0.0:
+					continue    # sparse format				
+			except ValueError:
 				if item:
 					categorical = True
-				pass
-			if item == 0.0 or not item:
-				continue    # sparse format
+				else:
+					continue
+				
 			if categorical:
-				cleanedItem =  "".join(item.split()).replace("|", "").replace(":", "")
-				new_item = cleanedItem + "_" + "{}".format( i + offset)
+				cleaned_item =  "".join( item.split()).replace( "|", "" ).replace( ":", "" )
+				new_item =  "{}_{}".format( i + 1, cleaned_item )
 			else:
-				new_item = "{}:{}".format( i + offset, item )
+				new_item = "{}:{}".format( i + 1, item )
 
 			
 		new_line.append( new_item )			
 
-	"""
-	if args.categorical:
-		for i, item in enumerate( line ):
-
-			new_item = "c{}_{}".format( i + 1, item )
-			new_line.append( new_item )		
-		
-	else:
-		for i, item in enumerate( line ):
-			try:
-				item = float( item )
-			except ValueError, e:
-				pass
-			if item == 0.0:
-				continue    # sparse!!!
-			new_item = "{}:{}".format( i + 1, item )
-			new_line.append( new_item )
-	"""
-			
 	new_line = " ".join( new_line )
 	new_line += "\n"
 	return new_line
@@ -101,7 +77,7 @@ parser.add_argument( "-z", "--convert_zeros", action = 'store_true', default = F
 	help = "convert labels for binary classification from 0 to -1" )
 
 parser.add_argument( "-i", "--ignore_columns",
-	help = "index(es) of columns to ignore, for example 3 or 3,4,5 (no spaces in between)" )
+	help = "zero-based index(es) of columns to ignore, for example 0 or 3 or 3,4,5 (no spaces in between)" )
 
 parser.add_argument( "-c", "--categorical", action = 'store_true',
 	help = "treat all columns as categorical" )
@@ -121,11 +97,14 @@ if args.ignore_columns:
 	ignore_columns = map( int, ignore_columns )
 	print "ignoring columns", ignore_columns
 	
-if args.label_index >= 0:
-	ignore_columns.append( args.label_index )	
+	if args.label_index in ignore_columns:
+		raise ValueError, "You are not trying to ignore the label column, are you?"
+		
+	# correct for later popping the label 
+	if args.label_index >= 0:
+		ignore_columns = map( lambda x: x - 1 if x > args.label_index else x, ignore_columns )
 	
-# ignore_columns.sort( reverse = True )	# for later popping
-# instead a dictionary for faster 'in'
+# a dictionary for faster 'in'
 ignore_columns_dict = { x: 1 for x in ignore_columns }
 
 ###
@@ -143,16 +122,8 @@ for line in reader:
 	if args.label_index < 0:
 		label = 1
 	else:
-		label = line[args.label_index]
+		label = line.pop( args.label_index )
 		
-	"""	
-	# will ignore columns in construct_line()
-	# drop ignored columns and/or label	
-	if ignore_columns:	
-		for ic in ignore_columns:
-			line.pop( ic )
-	"""
-
 	new_line = construct_line( label, line )
 	o.write( new_line )
 
