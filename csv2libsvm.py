@@ -50,7 +50,11 @@ for line in reader:
 		label = 1
 	else:
 		label = line.pop( args.label_index )
-		
-	new_line = construct_line( label, line )
-	o.write( new_line )
+	
+	try:	
+		new_line = construct_line( label, line )
+		o.write( new_line )
+	except ValueError:
+		print "Problem with the following line, skipping..."
+		print line
 	
