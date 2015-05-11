@@ -2,8 +2,6 @@
 
 """
 Convert CSV file to libsvm format. Works only with numeric variables.
-Put -1 as label index (argv[3]) if there are no labels in your file.
-Expecting no headers. If present, headers can be skipped with argv[4] == 1.
 """
 
 import sys
