@@ -47,7 +47,7 @@ if args.skip_headers:
 
 for line in reader:
 	if args.label_index == -1:
-		label = 1
+		label = "1"
 	else:
 		label = line.pop( args.label_index )
 	
