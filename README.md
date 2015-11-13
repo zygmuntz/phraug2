@@ -11,7 +11,7 @@ There's always at least one input file and usually one or more output files. An 
 
 For documentation:
 * try calling a script with `-h`, most will display usage information.
-* see the _phraug_ docs.
+* see the _phraug_ [docs](https://github.com/zygmuntz/phraug/blob/master/README.md).
 * see [http://fastml.com/introducing-phraug/](http://fastml.com/introducing-phraug/)
 
 <!--
