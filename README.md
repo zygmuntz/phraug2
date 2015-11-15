@@ -14,6 +14,33 @@ For documentation:
 * see the _phraug_ [docs](https://github.com/zygmuntz/phraug/blob/master/README.md).
 * see [http://fastml.com/introducing-phraug/](http://fastml.com/introducing-phraug/)
 
+Example:
+
+	>python split.py
+	usage: split.py [-h] [-p PROBABILITY] [-r RANDOM_SEED] [-s] [-c]
+					input_file output_file1 output_file2
+	split.py: error: too few arguments
+
+	>python split.py -h
+	usage: split.py [-h] [-p PROBABILITY] [-r RANDOM_SEED] [-s] [-c]
+					input_file output_file1 output_file2
+
+	split a file into two randomly, line by line.
+
+	positional arguments:
+	  input_file            path to an input file
+	  output_file1          path to the first output file
+	  output_file2          path to the second output file
+
+	optional arguments:
+	  -h, --help            show this help message and exit
+	  -p PROBABILITY, --probability PROBABILITY
+							probability of writing to the first file (default 0.9)
+	  -r RANDOM_SEED, --random_seed RANDOM_SEED
+							random seed
+	  -s, --skip_headers    skip the header line
+	  -c, --copy_headers    copy the header line to both output files
+
 <!--
 Format conversion
 -----------------
