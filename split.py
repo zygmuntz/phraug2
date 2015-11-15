@@ -6,7 +6,7 @@ import argparse
 import sys
 import random
 
-parser = argparse.ArgumentParser( description = "split a file into two randomly, line by line." )
+parser = argparse.ArgumentParser( description = "Split a file into two randomly, line by line." )
 parser.add_argument( "input_file", help = "path to an input file" )
 parser.add_argument( "output_file1", help = "path to the first output file" )
 parser.add_argument( "output_file2", help = "path to the second output file" )
