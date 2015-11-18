@@ -12,6 +12,8 @@ parser = argparse.ArgumentParser()
 parser.add_argument( "input_file", help = "path to the input file")
 parser.add_argument( "num_chunks", help = "number of chunks to split the input file into", type = int )
 parser.add_argument( "-s", "--seed", help = "sets a seed for the random number generator", default = None )
+parser.add_argument("-v", "--verbose", help = "will write counts during process to standard out",
+	action = "store_true", default = False)
 
 args = parser.parse_args()
 
@@ -36,7 +38,7 @@ for line in i:
 	os[n].write( line )
 
 	counter += 1
-	if counter % 100000 == 0:
+	if args.verbose and counter % 100000 == 0:
 		print counter
 
 
