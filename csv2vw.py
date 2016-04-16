@@ -93,6 +93,8 @@ parser.add_argument( "-c", "--categorical", action = 'store_true',
 parser.add_argument( "-n", "--print_counter", type = int, default = 10000,
 	help = "print counter every _ examples (default 10000)" )
 
+parser.add_argument( "-d", "--delimiter", default = ",",
+	help = "delimiter used to separate columns" )
 
 args = parser.parse_args()
 
@@ -120,7 +122,7 @@ ignore_columns_dict = { x: 1 for x in ignore_columns }
 i = open( args.input_file )
 o = open( args.output_file, 'wb' )
 
-reader = csv.reader( i )
+reader = csv.reader( i, delimiter = args.delimiter )
 if args.skip_headers:
 	headers = reader.next()
 
