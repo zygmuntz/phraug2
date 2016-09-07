@@ -1,6 +1,6 @@
 '''
 split a file into a given number of chunks randomly, line by line.
-Usage: chunk.py <input file> <number of chunks> [<seed>]'
+Usage: chunk.py <input file> <number of chunks> [-s <random seed>] [--verbose]'
 '''
 
 import sys
